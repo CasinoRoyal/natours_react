@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import { Action } from 'redux';
-import axios, { AxiosResponse } from 'axios';
 
+import { request } from '../api';
 import { appStore } from '../store/store';
 import { 
   ToursActionTypes,
@@ -10,12 +10,6 @@ import {
   FETCH_TOURS_FAILURE,
   Tours
 } from './types';
-
-type toursFetchResponse = {
-  data: {
-    docs: Tours
-  }
-}
 
 export function fetchToursStart(): ToursActionTypes {
   return {
@@ -42,10 +36,8 @@ export function fetchToursAsync(): ThunkAction<void, appStore, unknown, Action<s
     dispatch(fetchToursStart());
     
     try {
-      const res: AxiosResponse<toursFetchResponse> = await axios
-        .get(`https://natours-adventure.herokuapp.com/api/v1/tours`);
-      
-      dispatch(fetchToursSuccess(res.data.data.docs));
+      const res: Tours = await request.get<Tours>('tours')
+      dispatch(fetchToursSuccess(res));
     } catch(err) {
         dispatch(fetchToursFailure(err.message));
     }
