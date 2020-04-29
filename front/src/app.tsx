@@ -1,16 +1,15 @@
 import React, { FC, ReactElement } from 'react';
 
+import { AppRouter } from './app-router';
 import { Header } from './shareable/ui/header';
-import { CardsList } from './shareable/ui/cards-list';
+import { Footer } from './shareable/ui/footer';
 
 export const App: FC = (): ReactElement => {
   return (
     <>
       <Header />
-      
-      <main className="main">
-        <CardsList />
-      </main>
+      <AppRouter />
+      <Footer />
     </>
-  )
-};
+  );
+}

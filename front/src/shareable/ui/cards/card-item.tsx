@@ -1,12 +1,11 @@
 import React, { FC, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Tour } from '../../tours/types';
+import { Tour } from '../../../tours/types';
 
 export type CardItemProps = {
   cardData: Tour;
 }
-
-//Note: Add react-router for navigation from card button
 
 export const CardItem: FC<CardItemProps> = (props: CardItemProps): ReactElement => {
   const {
@@ -80,7 +79,7 @@ export const CardItem: FC<CardItemProps> = (props: CardItemProps): ReactElement 
           <span className="card__footer-value">{ratingsAverage} &nbsp;</span>
           <span className="card__footer-text">{`rating (${ratingsQuantity})`}</span>
         </p>
-        <a href={`/tour/${slug}`} className="btn btn--green btn--small">Details</a>
+        <Link to={`/${slug}`} className="btn btn--green btn--small">Details</Link>
       </div>
     </div>
   );

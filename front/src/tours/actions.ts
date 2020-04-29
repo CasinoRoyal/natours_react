@@ -32,7 +32,8 @@ export function fetchToursFailure(payload: string): ToursActionTypes {
 }
 
 export function fetchToursAsync(): ThunkAction<void, appStore, unknown, Action<string>> {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    console.log(getState());
     dispatch(fetchToursStart());
     
     try {

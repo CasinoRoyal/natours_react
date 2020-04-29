@@ -5,7 +5,8 @@ import { fetchToursAsync } from '../actions';
 import { TourState } from '../tour-reducer';
 import { appStore } from '../../store/store';
 
-export const useToursFetch = () => {
+
+export const useToursFetch = (): TourState => {
   const dispatch = useDispatch();
   const { 
     data, 
