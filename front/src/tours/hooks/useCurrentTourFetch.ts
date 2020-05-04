@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchToursAsync } from '../actions';
+import { fetchCurrentTourAsync } from '../actions';
 import { TourState } from '../tour-reducer';
 import { appStore } from '../../store/store';
 
 
-export const useToursFetch = (): TourState => {
+export const useCurrentTourFetch = (id: string): TourState => {
   const dispatch = useDispatch();
   const { 
     data, 
@@ -15,8 +15,8 @@ export const useToursFetch = (): TourState => {
   } = useSelector<appStore, TourState>((state) => state.tours);
 
   useEffect(() => {
-    dispatch(fetchToursAsync())
-  }, [dispatch]);
+    dispatch(fetchCurrentTourAsync(id))
+  }, [dispatch, id]);
 
   return {
     data, 

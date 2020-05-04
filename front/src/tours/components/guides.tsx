@@ -10,21 +10,22 @@ export const Guides: FC<GuidesType> = ({ guides }): ReactElement => {
       <h2 className="heading-secondary ma-bt-lg">Your tour guides</h2>
 
        {
-        guides.map(({ role, photo, name }) => {
+        guides.map(({ role, photo, name }, idx) => {
           const guideLabel = role === 'lead-guide' 
             ? 'Lead guide'
             : 'Tour guide';
 
-          <div className="overview-box__detail">
-            <img
-              src={`img/users/${photo}`}
-              alt={guideLabel}
-              className="overview-box__img"
-            />
-            <span className="overview-box__label">{guideLabel}</span>
-            <span className="overview-box__text">{name}</span>
-          </div>
-
+          return (
+            <div key={idx} className="overview-box__detail">
+              <img
+                src={`img/users/${photo}`}
+                alt={guideLabel}
+                className="overview-box__img"
+              />
+              <span className="overview-box__label">{guideLabel}</span>
+              <span className="overview-box__text">{name}</span>
+            </div>
+          )
         })
        }
     </div>

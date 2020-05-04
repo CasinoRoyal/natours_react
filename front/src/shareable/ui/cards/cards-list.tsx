@@ -10,7 +10,7 @@ export const CardsList: FC = (): ReactElement => {
   return (
     <div className="card-container">
       {
-        data.map((tour, idx): ReactElement<CardItemProps> => {
+        data.tours.map((tour, idx): ReactElement<CardItemProps> => {
           return <CardItem key={idx} cardData={tour} />
         })
       }

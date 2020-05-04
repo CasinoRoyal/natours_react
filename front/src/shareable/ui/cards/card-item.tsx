@@ -21,7 +21,7 @@ export const CardItem: FC<CardItemProps> = (props: CardItemProps): ReactElement 
     startLocation,
     startDates,
     locations,
-    slug
+    id
   } = props.cardData;
 
   return (
@@ -79,7 +79,7 @@ export const CardItem: FC<CardItemProps> = (props: CardItemProps): ReactElement 
           <span className="card__footer-value">{ratingsAverage} &nbsp;</span>
           <span className="card__footer-text">{`rating (${ratingsQuantity})`}</span>
         </p>
-        <Link to={`/${slug}`} className="btn btn--green btn--small">Details</Link>
+        <Link to={`/${id}`} className="btn btn--green btn--small">Details</Link>
       </div>
     </div>
   );

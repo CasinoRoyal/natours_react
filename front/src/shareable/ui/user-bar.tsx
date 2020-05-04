@@ -1,14 +1,15 @@
 import React, { FC, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 
 export const UserBar: FC = (): ReactElement => {
   return (
     <nav className="nav nav--user">
-      <a href="/" className="nav__el">My bookings</a>
+      <Link to="/" className="nav__el">My bookings</Link>
       
-      <a href="/" className="nav__el">
+      <Link to="/" className="nav__el">
         <img src="img/users/user-15.jpg" alt="User" className="nav__user-img" />
         <span>Jonas</span>
-      </a>
+      </Link>
 
 {
  //      <button className="nav__el">Log in</button>

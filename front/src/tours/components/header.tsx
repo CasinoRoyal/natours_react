@@ -4,13 +4,12 @@ import { Tour } from '../types';
 
 type TourHeaderType = Pick<
   Tour,
-  'name' | 'description' | 'imageCover' | 'startLocation' | 'duration'
+  'name' | 'imageCover' | 'startLocation' | 'duration'
 >;
 
 export const Header: FC<TourHeaderType> = (props): ReactElement => {
   const {
     name,
-    description,
     imageCover,
     startLocation,
     duration

@@ -15,8 +15,20 @@ type Location = {
   address: string;
 };
 
+export type Review = {
+  createdAt: number;
+  id: number;
+  rating: number;
+  review: string;
+  tour: number;
+  user: {
+    name: string,
+    photo: string
+  }
+};
+
 export type Tour = {
-  _id: number;
+  id: number;
   startLocation: Location;
   images: string[];
   startDates: string[]; //or Date
@@ -36,24 +48,25 @@ export type Tour = {
   slug: string;
 };
 
+export type CurrentTour = Tour & {reviews: Review[]};
 export type Tours = Array<Tour>;
-;
 
 // redux types
+// actions TOURS types 
 export const FETCH_TOURS_START = 'FETCH_TOURS_START';
 type FetchToursStartAction = {
-  type: typeof FETCH_TOURS_START
+  type: typeof FETCH_TOURS_START;
 }
 
 export const FETCH_TOURS_SUCCESS = 'FETCH_TOURS_SUCCESS';
 type FetchToursSuccessAction = {
-  type: typeof FETCH_TOURS_SUCCESS,
-  payload: Tours
+  type: typeof FETCH_TOURS_SUCCESS;
+  payload: Tours;
 }
 
 export const FETCH_TOURS_FAILURE = 'FETCH_TOURS_FAILURE';
 type FetchToursFailureAction = {
-  type: typeof FETCH_TOURS_FAILURE,
+  type: typeof FETCH_TOURS_FAILURE;
   payload: string; // Must be an ErrorMessageType or ErrorCodeType
 }
 
@@ -61,3 +74,26 @@ export type ToursActionTypes =
   | FetchToursStartAction
   | FetchToursSuccessAction
   | FetchToursFailureAction;
+
+// actions TOUR types
+export const FETCH_CURRENT_TOUR_START = 'FETCH_CURRENT_TOUR_START';
+type FetchCurrentTourStartAction = {
+  type: typeof FETCH_CURRENT_TOUR_START;
+}
+
+export const FETCH_CURRENT_TOUR_SUCCESS = 'FETCH_CURRENT_TOUR_SUCCESS';
+type FetchCurrentTourSuccessAction = {
+  type: typeof FETCH_CURRENT_TOUR_SUCCESS;
+  payload: CurrentTour;
+}
+
+export const FETCH_CURRENT_TOUR_FAILURE = 'FETCH_CURRENT_TOUR_FAILURE';
+type FetchCurrentTourFailureAction = {
+  type: typeof FETCH_CURRENT_TOUR_FAILURE;
+  payload: string; // Must be an ErrorMessageType or ErrorCodeType
+}
+
+export type CurrentTourActionTypes = 
+  | FetchCurrentTourStartAction
+  | FetchCurrentTourSuccessAction
+  | FetchCurrentTourFailureAction;

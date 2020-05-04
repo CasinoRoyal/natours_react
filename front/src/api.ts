@@ -9,7 +9,7 @@ class Request {
 
   async get<T>(endPoint: string): Promise<T> {
     const res = await instance.get(`/${endPoint}`);
-    return res.data.data.docs;
+    return res.data.data;
   }
 
   post<T, O>(endPoint: string, options: O): Promise<T> {

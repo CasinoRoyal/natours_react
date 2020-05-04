@@ -1,9 +1,10 @@
 import React, { FC, ReactElement } from 'react';
+import { Link } from 'react-router-dom';
 
 export const NavTours: FC = (): ReactElement => {
   return (
     <nav className="nav nav--tours">
-      <a href="/" className="nav__el">All tours</a>
+      <Link to="/" className="nav__el">All tours</Link>
       <form className="nav__search">
         <button className="nav__search-btn">
           <svg>

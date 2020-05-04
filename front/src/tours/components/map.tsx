@@ -1,3 +1,11 @@
+import React, { FC, ReactElement } from 'react';
+
+export const Map: FC = (): ReactElement => {
+  return (
+    <div>hello</div>
+  );
+}
+
       // <section className="section-map">
       //   <div id="map"></div>
       //   <script>
