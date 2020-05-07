@@ -17,27 +17,27 @@ export const TourPage: FC = (): ReactElement => {
   const { tourId } = useParams<ParamsType>();
   const { data, isFetching, error } = useCurrentTourFetch(tourId);
 
-  if (data.currentTour) {
+  if (data) {
     return (
       <>
         <Header 
-          name={data.currentTour.name}
-          startLocation={data.currentTour.startLocation}
-          duration={data.currentTour.duration}
-          imageCover={data.currentTour.imageCover}
+          name={data.name}
+          startLocation={data.startLocation}
+          duration={data.duration}
+          imageCover={data.imageCover}
         />
         <Description 
-          description={data.currentTour.description}
-          name={data.currentTour.name}
-          difficulty={data.currentTour.difficulty}
-          startDates={data.currentTour.startDates}
-          maxGroupSize={data.currentTour.maxGroupSize}
-          ratingsAverage={data.currentTour.ratingsAverage}
-          guides={data.currentTour.guides}
+          description={data.description}
+          name={data.name}
+          difficulty={data.difficulty}
+          startDates={data.startDates}
+          maxGroupSize={data.maxGroupSize}
+          ratingsAverage={data.ratingsAverage}
+          guides={data.guides}
         />
-        <Images images={data.currentTour.images} name={data.currentTour.name}/>
-        <Reviews reviews={data.currentTour.reviews}/>
-        <CTA images={data.currentTour.images} duration={data.currentTour.duration} />
+        <Images images={data.images} name={data.name}/>
+        <Reviews reviews={data.reviews}/>
+        <CTA images={data.images} duration={data.duration} />
       </>
     )
   }

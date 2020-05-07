@@ -1,8 +1,7 @@
 import { 
   ToursActionTypes,
   CurrentTourActionTypes,
-  Tours,
-  CurrentTour,
+  ToursDataState,
   FETCH_TOURS_START,
   FETCH_TOURS_SUCCESS,
   FETCH_TOURS_FAILURE,
@@ -11,11 +10,8 @@ import {
   FETCH_CURRENT_TOUR_FAILURE
 } from './types';
 
-export type TourState = {
-  data: {
-    tours: Tours,
-    currentTour: CurrentTour | null
-  },
+export type ToursState = {
+  data: ToursDataState,
   isFetching: boolean;
   error: boolean;
 }
@@ -34,7 +30,7 @@ const initialState = {
 export const tourReducer = (
   state = initialState, 
   action: ToursActionTypes | CurrentTourActionTypes
-): TourState => {
+): ToursState => {
   switch (action.type) {
     case FETCH_TOURS_START:
     case FETCH_CURRENT_TOUR_START:
