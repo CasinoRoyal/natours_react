@@ -48,9 +48,13 @@ export type Tour = {
   slug: string;
 };
 
+
+export type Tours = Tour[];
+
 export type CurrentTour = Tour & {reviews: Review[]};
-export type Tours = Array<Tour>;
+
 export type CurrentTourDataState = CurrentTour | null;
+
 export type ToursDataState = {
   tours: Tours;
   currentTour: CurrentTourDataState;
