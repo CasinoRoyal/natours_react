@@ -1,10 +1,9 @@
 import { createSelector, Selector } from 'reselect';
 
-import { appStore } from '../store/store';
-// import { ToursDataState } from './types';
+import { AppStore } from '../store/store';
 import { ToursState } from './tour-reducer'
 
-const getToursData: Selector<appStore, ToursState> = (state) => state.tours;
+const getToursData: Selector<AppStore, ToursState> = (state) => state.tours;
 
 export const getAllToursData = createSelector(
   getToursData,

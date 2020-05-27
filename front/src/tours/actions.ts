@@ -1,8 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
-import { Action } from 'redux';
 
 import { api } from '../http/api';
-import { appStore } from '../store/store';
+import { AppStore } from '../store/store';
 import { 
   ToursActionTypes,
   CurrentTourActionTypes,
@@ -41,8 +40,8 @@ type FetchToursResponseType = {
   docs: Tours
 }
 
-export function fetchToursAsync(): ThunkAction<void, appStore, unknown, Action<string>> {
-  return async (dispatch, getState) => {
+export function fetchToursAsync(): ThunkAction<void, AppStore, unknown, ToursActionTypes> {
+  return async (dispatch) => {
     dispatch(fetchToursStart());
     
     try {
@@ -51,7 +50,7 @@ export function fetchToursAsync(): ThunkAction<void, appStore, unknown, Action<s
         endPoint: 'tours'
       }
       const res: FetchToursResponseType = await api.request<FetchToursResponseType>(options);
-      console.log(res);
+
       dispatch(fetchToursSuccess(res.docs));
     } catch(err) {
         dispatch(fetchToursFailure(err.message));
@@ -85,7 +84,7 @@ type FetchCurrentTourResponseType = {
   doc: CurrentTour
 }
 
-export function fetchCurrentTourAsync(id: string): ThunkAction<void, appStore, unknown, Action<string>> {
+export function fetchCurrentTourAsync(id: string): ThunkAction<void, AppStore, unknown, CurrentTourActionTypes> {
   return async (dispatch, getState) => {
     dispatch(fetchCurrentTourStart());
     

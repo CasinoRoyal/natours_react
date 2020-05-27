@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useCurrentTourFetch } from '../tours/hooks/useCurrentTourFetch';
+import { useCurrentTourFetch } from '../tours/hooks/use-current-tour-fetch';
 import { Tour } from '../tours/types';
 import { Header } from '../tours/components/header';
 import { Description } from '../tours/components/description';
@@ -26,6 +26,7 @@ export const TourPage: FC = (): ReactElement => {
           duration={data.duration}
           imageCover={data.imageCover}
         />
+        
         <Description 
           description={data.description}
           name={data.name}
@@ -35,8 +36,11 @@ export const TourPage: FC = (): ReactElement => {
           ratingsAverage={data.ratingsAverage}
           guides={data.guides}
         />
+        
         <Images images={data.images} name={data.name}/>
+        
         <Reviews reviews={data.reviews}/>
+        
         <CTA images={data.images} duration={data.duration} />
       </>
     )

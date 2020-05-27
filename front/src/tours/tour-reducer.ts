@@ -1,3 +1,4 @@
+import { ReducerStateType } from '../shareable/types';
 import { 
   ToursActionTypes,
   CurrentTourActionTypes,
@@ -30,18 +31,20 @@ const initialState = {
 export const tourReducer = (
   state = initialState, 
   action: ToursActionTypes | CurrentTourActionTypes
-): ToursState => {
+): ReducerStateType<ToursDataState> => {
   switch (action.type) {
     case FETCH_TOURS_START:
     case FETCH_CURRENT_TOUR_START:
       return {
         ...state,
-        isFetching: true
-      }
+        isFetching: true,
+        error: false
+      };
     case FETCH_TOURS_SUCCESS: 
       return {
         ...state,
         isFetching: false,
+        error: false,
         data: {
           ...state.data,
           tours: action.payload
@@ -51,18 +54,19 @@ export const tourReducer = (
       return {
         ...state,
         isFetching: false,
+        error: false,
         data: {
           ...state.data,
           currentTour: action.payload
         }
-      }
+      };
     case FETCH_TOURS_FAILURE:
     case FETCH_CURRENT_TOUR_FAILURE:
-     return {
-       ...state,
-       isFetching: false,
-       error: true
-     };
+      return {
+        ...state,
+        isFetching: false,
+        error: true
+       };
     default:
       return state;
   }

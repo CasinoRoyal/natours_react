@@ -3,24 +3,18 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchCurrentTourAsync } from '../actions';
 import { CurrentTourDataState } from '../types';
-// import { ToursState } from '../tour-reducer';
 import { getCurrentTourData } from '../selectors';
-import { appStore } from '../../store/store';
+import { ReducerStateType } from '../../shareable/types';
+import { AppStore } from '../../store/store';
 
 
-type SelectedCurrentTourState = {
-  data: CurrentTourDataState;
-  isFetching: boolean;
-  error: boolean;
-};
-
-export const useCurrentTourFetch = (id: string): SelectedCurrentTourState => {
+export const useCurrentTourFetch = (id: string): ReducerStateType<CurrentTourDataState> => {
   const dispatch = useDispatch();
   const { 
     data, 
     isFetching, 
     error
-  } = useSelector<appStore, SelectedCurrentTourState>(getCurrentTourData);
+  } = useSelector<AppStore, ReducerStateType<CurrentTourDataState>>(getCurrentTourData);
 
   useEffect(() => {
     dispatch(fetchCurrentTourAsync(id))

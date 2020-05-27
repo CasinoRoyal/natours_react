@@ -19,4 +19,4 @@ const middlewares: Middleware[] = [logger, thunk];
 
 export const store = createStore(reducer, applyMiddleware(...middlewares));
 
-export type appStore = ReturnType<typeof reducer>;
+export type AppStore = ReturnType<typeof reducer>;

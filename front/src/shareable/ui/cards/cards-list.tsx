@@ -1,7 +1,7 @@
 import React, { FC, ReactElement } from 'react';
 
 import { CardItem, CardItemProps } from './card-item';
-import { useToursFetch } from '../../../tours/hooks/useToursFetch';
+import { useToursFetch } from '../../../tours/hooks/use-tours-fetch';
 import { Tour } from '../../../tours/types';
 
 export const CardsList: FC = (): ReactElement => {

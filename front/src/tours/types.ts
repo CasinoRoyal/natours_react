@@ -1,12 +1,4 @@
-type User = {
-  _id: number;
-  role: string;
-  active: boolean;
-  name: string;
-  email: string;
-  photo: string;
-  password: number;
-};
+import { User } from '../user/types';
 
 type Location = {
   type: string;
