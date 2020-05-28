@@ -6,12 +6,15 @@ import { Spinner } from '../shareable/ui/spinner';
 import { AuthForm } from '../user/components/auth-form';
 
 export const AuthPage: FC = (): ReactElement => {
-  const { methodAuth } = useParams();
-  const { login, signup, isFetch, isError } = useAuth();
+  const { methodAuth } = useParams<{methodAuth: string}>();
+
+  const { error, isFetching } = useAuth(methodAuth);
 
   const isSignup = methodAuth ==='signup' ? true : false;
 
-  if (isFetch) return <Spinner />
+  if (isFetching) return <Spinner />
+
+  if (error) return <div>{error}</div>
 
   return (
     <main className="main">

@@ -31,7 +31,7 @@ function fetchUserSuccess(payload: User): UserActionsType {
     type: FETCH_USER_SUCCESS,
     payload
   }
-}
+};
 
 
 function fetchUserFailure(payload: string): UserActionsType {
@@ -39,7 +39,7 @@ function fetchUserFailure(payload: string): UserActionsType {
     type: FETCH_USER_FAILURE,
     payload
   }
-}
+};
 
 export function fetchUserAsync(methodAuth:string, data:AuthFormData): ThunkAction<void, AppStore, unknown, UserActionsType> {
   return async (dispatch) => {
@@ -60,10 +60,11 @@ export function fetchUserAsync(methodAuth:string, data:AuthFormData): ThunkActio
     }
 
     try {
-      const res = await api.request(requestOptions);
-      console.log(res);
+      const res: User = await api.request(requestOptions);
+      dispatch(fetchUserSuccess(res));
     } catch(err) {
-        console.log('[AUTH USER ERROR]: ',err);
-    }
-  } 
-}
+        const errMsg = err.response?.data?.message
+        dispatch(fetchUserFailure(errMsg));
+    };
+  }; 
+};

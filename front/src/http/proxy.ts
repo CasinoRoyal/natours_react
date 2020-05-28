@@ -1,4 +1,4 @@
-import { http, IHttp, RequestOptionsType, httpResponseType } from './http';
+import { http, IHttp, RequestOptionsType } from './http';
 
 interface ICachedResponse {
   data: any;
@@ -47,7 +47,7 @@ class CachedHttp implements IHttp {
       return res;
     
     } catch(err) {
-        throw new Error(err);
+        throw err;
     }
   };
 }

@@ -2,7 +2,6 @@ import React, { FC, ReactElement } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useCurrentTourFetch } from '../tours/hooks/use-current-tour-fetch';
-import { Tour } from '../tours/types';
 import { Header } from '../tours/components/header';
 import { Description } from '../tours/components/description';
 import { Images } from '../tours/components/images';
@@ -16,7 +15,7 @@ type ParamsType = {
 export const TourPage: FC = (): ReactElement => {
   const { tourId } = useParams<ParamsType>();
   const { data, isFetching, error } = useCurrentTourFetch(tourId);
-
+  console.log(data, isFetching, error);
   if (data) {
     return (
       <>

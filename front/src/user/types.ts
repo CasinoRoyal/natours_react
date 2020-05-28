@@ -18,7 +18,7 @@ export type AuthFormData = {
   email: string;
   password: number;
   username?: string;
-  confirmPassword?: number;
+  passwordConfirm?: number;
 };
 
 // redux types

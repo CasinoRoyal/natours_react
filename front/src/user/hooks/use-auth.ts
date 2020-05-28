@@ -1,41 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-// import { useRegistration } from './use-registration';
-import { AuthFormData } from '../types';
+import { fetchUserAsync } from '../actions';
+import { selectUserData } from '../selectors';
+import { UserData, AuthFormData } from '../types';
+import { ReducerStateType } from '../../shareable/types';
+import { AppStore } from '../../store/store';
 
-export const useAuth = () => {
-  const [isFetch, setIsFetch] = useState(false);
-  const [isError, setIsError] = useState(false);
+type StateFetchDataType = {
+  data: AuthFormData | null;
+  fetch: boolean;
+};
 
-  const setAuthState = (isFetching:boolean, error:boolean): void => {
-    if (isFetching) { 
-      setIsFetch(true);
-      setIsError(false);
-    };
+type ReturnAuthType = ReducerStateType<UserData> & { fetch: (data: AuthFormData) => void };
 
-    if (error) {
-      setIsFetch(false);
-      setIsError(true); 
+export const useAuth = (methodAuth:string): ReturnAuthType  => {
+  const [doFetch, setDoFetch] = useState<StateFetchDataType>({ data: null, fetch: false });
+  const dispatch = useDispatch();
+  const {
+    data,
+    isFetching,
+    error
+  } = useSelector<AppStore, ReducerStateType<UserData>>(selectUserData);
+
+  useEffect(() => {
+    if (doFetch.fetch && doFetch.data !==null) {
+      dispatch(fetchUserAsync(methodAuth, doFetch.data));
+      
+      setDoFetch((prevState) => ({
+        ...prevState,
+        fetch: false
+      }));
     }
-  };
-  
-  const login = (dataForm: AuthFormData): void => {
-    // const {isFetching, error} = useRegistration('login', dataForm);
-    // setAuthState(isFetching, error);
-  };
+  }, [doFetch, dispatch, methodAuth]);
 
-  const signup = (dataForm: AuthFormData): void => {
-    // const {isFetching, error} = useRegistration('signup', dataForm);
-    // setAuthState(isFetching, error);
-  };
-
-  const logout = (): void => {};
+  function fetch(data: AuthFormData): void {
+    setDoFetch((prevState) => ({
+      ...prevState,
+      data,
+      fetch: true
+    }));
+  }
 
   return {
-    login,
-    logout,
-    signup,
-    isFetch,
-    isError
-  };   
+    data,
+    isFetching,
+    error,
+    fetch
+  };
 };

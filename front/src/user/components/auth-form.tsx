@@ -1,58 +1,33 @@
 import React, { FC } from 'react';
 
+import { 
+  createStateSchema, 
+  createValidateSchema,
+  StateSchemaType,
+  ValidateSchemaType
+} from '../utils/create-schemas';
 import { useForm } from '../../shareable/hooks/useForm';
-import { validator } from '../../shareable/utils/generateFormOptions';
+import {useAuth} from '../hooks/use-auth';
 
 export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
-  const stateSchema = {
-    username: '',
-    email: '',
-    password: '',
-    confirm: ''
-  };
+  const method = isSignup ? 'signup' : 'login';
+  const {fetch} = useAuth(method)
+  
+  const stateSchema = createStateSchema(isSignup);
+  const validateSchema = createValidateSchema(isSignup);
 
-  const validateSchema = {
-    username: {
-      required: true,
-      error: 'Please, provide your username',
-      validator
-    },
-    email: {
-      required: true,
-      error: 'Please, provide your email',
-      validator
-    },
-    password: {
-      required: true,
-      error: 'Password is required',
-      validator
-    },
-    confirm: {
-      required: true,
-      error: 'Confirm password is required',
-      validator
-    }
-  };
-
-  const onSubmitCallback = () => {}
-
-  type StateType = typeof stateSchema;
-  type ValidateType = typeof validateSchema;
-
-  if (!isSignup) {
-    delete stateSchema.username;
-    delete stateSchema.confirm;
-    delete validateSchema.username;
-    delete validateSchema.confirm;
-  };
+  const formMethods = useForm<StateSchemaType, ValidateSchemaType, typeof fetch>(
+    stateSchema, 
+    validateSchema, 
+    fetch
+  );
 
   const { 
     form, 
     handleChange, 
     handleSubmit,
     errorForm
-    
-  } = useForm<StateType, ValidateType, typeof onSubmitCallback>(stateSchema, validateSchema, onSubmitCallback);
+  } = formMethods;
 
   return (
     <form className="form form--login" onSubmit={handleSubmit}>
@@ -110,14 +85,14 @@ export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
 
       {isSignup && (
         <div className="form__group ma-bt-md">
-          <label htmlFor="confirm" className="form__label">
+          <label htmlFor="passwordConfirm" className="form__label">
             Confirm password
           </label> 
 
           <input 
             type="password"
-            name="confirm"
-            id="confirm" 
+            name="passwordConfirm"
+            id="passwordConfirm" 
             className="form__input"
             placeholder="••••••••"
             minLength={8}

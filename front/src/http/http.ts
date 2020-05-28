@@ -26,7 +26,7 @@ class Http implements IHttp {
   
   async request<T>(options: RequestOptionsType): Promise<T> {
     const { method, endPoint } = options;
-    
+
     let res: httpResponseType<T>;
 
     try {
@@ -50,8 +50,7 @@ class Http implements IHttp {
       return res.data.data;    
 
     } catch(err) {
-      console.log(err);
-      return err;
+        throw err;
     }  
   }
 }

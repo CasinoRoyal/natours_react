@@ -1,19 +1,18 @@
 import { 
  useState, 
  useCallback, 
- useEffect, 
  ChangeEventHandler,
  FormEventHandler
 } from 'react';
 
 type ExtendsType = {[key: string]: any};
-type CallbackType = () => void;
+type CallbackType = (data: any) => void;
 
-export function useForm<S extends ExtendsType, V extends ExtendsType, C extends CallbackType>(
-  initialState: S, 
-  validationScheme: V,
-  callback: C 
-) {
+export function useForm<
+  S extends ExtendsType, 
+  V extends ExtendsType,
+  C extends CallbackType
+>(initialState: S, validationScheme: V, callback: C) {
 
   const [form, setForm] = useState(initialState);
   const [errorForm, setErrorForm] = useState({error: false, text: ''});
@@ -41,8 +40,8 @@ export function useForm<S extends ExtendsType, V extends ExtendsType, C extends 
       const  { name, value, type, id } = event.target;
       const validatorOptions = [value, type]
 
-      if (id ==='confirm') {
-        validatorOptions[1] = 'confirm';
+      if (id ==='passwordConfirm') {
+        validatorOptions[1] = 'passwordConfirm';
         validatorOptions.push(form.password);
       };
 
@@ -73,11 +72,11 @@ export function useForm<S extends ExtendsType, V extends ExtendsType, C extends 
       if (errorForm || isValidForm) {
 
       }
-
-      callback();
+      console.log('submit');
+      callback(form);
     }, 
 
-  [errorForm, _validate, callback]);
+  [errorForm, _validate, callback, form]);
 
   return {
     form,

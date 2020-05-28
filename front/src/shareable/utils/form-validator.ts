@@ -1,10 +1,12 @@
 //type: text, email, password, confirm
 
-export const validator = (
-    value: string, 
-    type: string, 
-    confirmValue?: string
-): string | null | void  => {
+export type ValidatorType = (
+  value: string, 
+  type: string, 
+  confirmValue?: string
+) => string | null | void;
+
+export const validator: ValidatorType = (value, type, confirmValue) => {
 
   if (!value || !type) {
     return;
@@ -21,7 +23,7 @@ export const validator = (
       return null;
 
     case 'email':
-      regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
       const isMail = regex.test(value);
       if (!isMail) {
         return 'Please, provide correct email address';

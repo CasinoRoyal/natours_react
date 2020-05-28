@@ -34,6 +34,11 @@ const createAuthToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsyncError(async (req, res, next) => {
+  console.log(req.body)
+  if(req.body.username) {
+    req.body.name = req.body.username;
+    delete req.body.username;
+  }
   const newUser = await User.create(req.body);
   const url = `${req.protocol}://${req.get('host')}/me`;
 
@@ -53,7 +58,7 @@ exports.login = catchAsyncError(async (req, res, next) => {
   if (!user || !(await user.isCorrectPassword(password, user.password))) {
     return next(new AppError('Wrong email and/or password', 401));
   };
-
+  //res.json('hello0')
   createAuthToken(user, 200, req, res);
 });
 
