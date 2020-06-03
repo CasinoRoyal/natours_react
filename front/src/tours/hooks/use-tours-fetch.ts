@@ -5,7 +5,7 @@ import { Tours } from '../types';
 import { getAllToursData } from '../selectors';
 import { fetchToursAsync } from '../actions';
 import { AppStore } from '../../store/store';
-import { ReducerStateType } from '../../shareable/types';
+import { ReducerStateType } from '../../store/types';
 
 export const useToursFetch = (): ReducerStateType<Tours> => {
   const dispatch = useDispatch();

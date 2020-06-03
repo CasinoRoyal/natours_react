@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchUserAsync } from '../actions';
 import { selectUserData } from '../selectors';
 import { UserData, AuthFormData } from '../types';
-import { ReducerStateType } from '../../shareable/types';
+import { ReducerStateType } from '../../store/types';
 import { AppStore } from '../../store/store';
 
 type StateFetchDataType = {

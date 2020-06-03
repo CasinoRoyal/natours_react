@@ -1,7 +1,7 @@
 import { createSelector, Selector } from 'reselect';
 
 import { UserDataState } from './types';
-import { ReducerStateType } from '../shareable/types';
+import { ReducerStateType } from '../store/types';
 import { AppStore } from '../store/store';
 
 

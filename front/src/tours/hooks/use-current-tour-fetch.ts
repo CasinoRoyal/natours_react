@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCurrentTourAsync } from '../actions';
 import { CurrentTourDataState } from '../types';
 import { getCurrentTourData } from '../selectors';
-import { ReducerStateType } from '../../shareable/types';
+import { ReducerStateType } from '../../store/types';
 import { AppStore } from '../../store/store';
 
 

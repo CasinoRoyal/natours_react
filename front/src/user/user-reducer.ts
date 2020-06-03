@@ -1,4 +1,4 @@
-import { ReducerStateType } from '../shareable/types';
+import { ReducerStateType } from '../store/types';
 import { 
   UserDataState, 
   UserActionsType,
