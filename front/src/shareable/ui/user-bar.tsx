@@ -1,17 +1,20 @@
 import React, { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-export const UserBar: FC = (): ReactElement => {
-  const login = false;
+import { useUser } from '../../user/hooks/use-user';
 
-  const renderTemplate = login ? (
+export const UserBar: FC = (): ReactElement => {
+  const user = useUser();
+
+  const renderTemplate = user ? (
       <>
-        <Link to="/" className="nav__el">My bookings</Link>
+        <Link to="/booking" className="nav__el">My bookings</Link>
         
-        <Link to="/" className="nav__el">
+        <Link to="/profile" className="nav__el">
           <img src="img/users/user-15.jpg" alt="User" className="nav__user-img" />
           <span>Jonas</span>
         </Link>
+        <button>Logout</button>
       </>
     ) : (
       <>
