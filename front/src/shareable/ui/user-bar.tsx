@@ -15,12 +15,12 @@ export const UserBar: FC = (): ReactElement => {
           <span>Jonas</span>
         </Link>
         <button>Logout</button>
+        <Link to={`/secret`} className="nav__el nav__el--cta">Go secret!</Link>
       </>
     ) : (
       <>
         <Link to={`/auth/login`} className="nav__el">Log in</Link>
         <Link to={`/auth/signup`} className="nav__el nav__el--cta">Sign up</Link>
-        <Link to={`/secret`} className="nav__el nav__el--cta">Go secret!</Link>
       </>
      );
 
