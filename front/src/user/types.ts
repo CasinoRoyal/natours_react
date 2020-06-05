@@ -45,8 +45,26 @@ type fetchUserFailureAction = {
   payload: string
 }
 
+export const CHECK_USER_START = 'CHECK_USER_START';
+type checkUserStartAction = {
+  type: typeof CHECK_USER_START
+}
+
+export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
+type checkUserSuccessAction = {
+  type: typeof CHECK_USER_SUCCESS
+}
+
+export const CHECK_USER_FAILURE = 'CHECK_USER_FAILURE';
+type checkUserFailureAction = {
+  type: typeof CHECK_USER_FAILURE
+}
+
 export type UserActionsType = 
   | requestLoginUserAction
   | requestSignupUserAction
   | fetchUserSuccessAction
-  | fetchUserFailureAction;
+  | fetchUserFailureAction
+  | checkUserStartAction
+  | checkUserSuccessAction
+  | checkUserFailureAction;

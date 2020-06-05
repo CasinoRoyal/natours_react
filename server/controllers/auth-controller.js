@@ -14,15 +14,15 @@ const generateToken = (id) => {
 
 const createAuthToken = (user, statusCode, req, res) => {
   const token = generateToken(user._id);
-  const cookieOptions = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
-    ),
-    httpOnly: true,
-    secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
-  };
+  // const cookieOptions = {
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+  //   ),
+  //   httpOnly: true,
+  //   secure: req.secure || req.headers['x-forwarded-proto'] === 'https'
+  // };
   
-  res.cookie('jwt', token, cookieOptions);
+  res.cookie('jwt', token);
 
   return res.status(statusCode).json({
     status: 'success',
@@ -34,7 +34,6 @@ const createAuthToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsyncError(async (req, res, next) => {
-  console.log(req.body)
   if(req.body.username) {
     req.body.name = req.body.username;
     delete req.body.username;
@@ -54,11 +53,12 @@ exports.login = catchAsyncError(async (req, res, next) => {
   };
 
   const user = await User.findOne({email}).select('+password');
+  
 
   if (!user || !(await user.isCorrectPassword(password, user.password))) {
     return next(new AppError('Wrong email and/or password', 401));
   };
-  //res.json('hello0')
+
   createAuthToken(user, 200, req, res);
 });
 
@@ -135,6 +135,27 @@ exports.isLoggedIn = async (req, res, next) => {
   };
 
   next();
+};
+
+exports.checkAuth = async (req, res, next) => {
+  if (!req.cookies.jwt) {
+    // return next(new AppError( 'Unauthorized', 401));
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  const decodeToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+  const user = await User.findById(decodeToken.id);
+
+  if (!user) {
+    return next(new AppError( 'User not found', 404));
+  }
+
+  if (user.isPasswordChanged(decodeToken.iat)) {
+    return next(new AppError('Password was changed', 401));
+  };
+
+  res.status(200).json({ status: 'success', data: { user } })
+
 };
 
 exports.restrictTo = (...roles) => {

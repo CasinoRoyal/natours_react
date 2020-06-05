@@ -1,14 +1,25 @@
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { UserData } from '../types';
 import { selectUserData } from '../selectors';
+import { checkUserAsync } from '../actions';
 import { ReducerStateType } from '../../store/types';
 import { AppStore } from '../../store/store';
 
-export const useUser = (): UserData | null => {
+export const useUser = (): UserData => {
+  const dispatch = useDispatch();
   const {
     data
   } = useSelector<AppStore, ReducerStateType<UserData>>(selectUserData);
-  console.log(data);
-  return data || null;
+
+  useEffect(() => {
+    
+    if (data) return;
+
+    dispatch(checkUserAsync());
+
+  }, [dispatch, data]);
+
+  return data;
 }

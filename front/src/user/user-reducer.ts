@@ -5,7 +5,8 @@ import {
   REQUEST_LOGIN_USER,
   REQUEST_SIGNUP_USER, 
   FETCH_USER_SUCCESS, 
-  FETCH_USER_FAILURE  
+  FETCH_USER_FAILURE,
+  CHECK_USER_FAILURE 
 } from './types';
 
 const initialState = {
@@ -46,7 +47,8 @@ export const userReducer = (
         isFetching: false,
         error: true
       }
-    
+
+    case CHECK_USER_FAILURE:
     default:
       return state;
   }

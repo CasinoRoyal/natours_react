@@ -7,7 +7,10 @@ import {
   REQUEST_LOGIN_USER,
   REQUEST_SIGNUP_USER, 
   FETCH_USER_SUCCESS, 
-  FETCH_USER_FAILURE 
+  FETCH_USER_FAILURE,
+  CHECK_USER_START,
+  CHECK_USER_SUCCESS,
+  CHECK_USER_FAILURE
 } from './types';
 import { AppStore } from '../store/store';
 import { api } from '../http/api';
@@ -41,6 +44,24 @@ function fetchUserFailure(payload: string): UserActionsType {
   }
 };
 
+function checkUserStart(): UserActionsType {
+  return {
+    type: CHECK_USER_START
+  }
+};
+
+function checkUserSuccess(): UserActionsType {
+  return {
+    type: CHECK_USER_SUCCESS
+  }
+};
+
+function checkUserFailure(): UserActionsType {
+  return {
+    type: CHECK_USER_FAILURE
+  }
+};
+
 export function fetchUserAsync(methodAuth:string, data:AuthFormData): ThunkAction<void, AppStore, unknown, UserActionsType> {
   return async (dispatch) => {
     const requestOptions: RequestOptionsType = {
@@ -60,11 +81,33 @@ export function fetchUserAsync(methodAuth:string, data:AuthFormData): ThunkActio
     }
 
     try {
-      const res: User = await api.request(requestOptions);
-      dispatch(fetchUserSuccess(res));
+      const res: { user: User } = await api.request(requestOptions);
+      dispatch(fetchUserSuccess(res.user));
     } catch(err) {
-        const errMsg = err.response?.data?.message
+        const errMsg = err.response?.data?.message;
         dispatch(fetchUserFailure(errMsg));
     };
   }; 
 };
+
+export function checkUserAsync(): ThunkAction<void, AppStore, unknown, UserActionsType> {
+  return async (dispatch) => {
+    dispatch(checkUserStart());
+
+    const options = {
+      method: 'GET',
+      endPoint: 'users/check-auth'
+    }
+
+    try {
+      const res: { user: User } = await api.request(options);
+      dispatch(checkUserSuccess());
+      dispatch(fetchUserSuccess(res.user));
+    
+    } catch(err) {
+        console.dir(err);
+        dispatch(checkUserFailure());
+    }
+
+  }
+}

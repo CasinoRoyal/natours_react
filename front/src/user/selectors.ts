@@ -9,9 +9,11 @@ const getUserData: Selector<AppStore, ReducerStateType<UserDataState>> = (state)
 
 export const selectUserData = createSelector(
   getUserData,
-  (userData) => ({ 
-    data: userData.data.user,
-    isFetching: userData.isFetching,
-    error: userData.error
-  })
+  ({ data, isFetching, error }) => {
+    return {
+      data: data.user,
+      isFetching: isFetching,
+      error: error
+    }
+  }
 );

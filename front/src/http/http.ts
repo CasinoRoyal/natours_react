@@ -3,7 +3,12 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios';
 const instance: AxiosInstance = axios.create({
   // baseURL: 'https://natours-adventure.herokuapp.com/api/v1',
   baseURL: 'http://127.0.0.1:3001/api/v1',
-  timeout: 4000
+  timeout: 4000,
+  withCredentials: true,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Content-Type': 'application/json'
+  }
 });
 
 export type RequestOptionsType = {

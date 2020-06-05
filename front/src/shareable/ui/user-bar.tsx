@@ -11,8 +11,8 @@ export const UserBar: FC = (): ReactElement => {
         <Link to="/booking" className="nav__el">My bookings</Link>
         
         <Link to="/profile" className="nav__el">
-          <img src="img/users/user-15.jpg" alt="User" className="nav__user-img" />
-          <span>Jonas</span>
+          <img src={`img/users/${user.photo}`} alt="User" className="nav__user-img" />
+          <span>{user.name}</span>
         </Link>
         <button>Logout</button>
         <Link to={`/secret`} className="nav__el nav__el--cta">Go secret!</Link>

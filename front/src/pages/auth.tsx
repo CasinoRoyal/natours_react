@@ -10,6 +10,7 @@ export const AuthPage: FC = (): ReactElement => {
   const user = useUser();
   const { methodAuth } = useParams<{methodAuth: string}>();
   const { error, isFetching } = useAuth(methodAuth);
+  console.log(user, error);
 
   if (user) {
     return <Redirect to='/' />
@@ -19,7 +20,7 @@ export const AuthPage: FC = (): ReactElement => {
 
   if (isFetching) return <Spinner />
 
-  if (error) return <div>{error}</div>
+  if (error) return <div>Error!!!!</div>
 
   return (
     <main className="main">
