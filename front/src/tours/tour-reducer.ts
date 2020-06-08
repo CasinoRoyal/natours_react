@@ -1,5 +1,6 @@
 import { ReducerStateType } from '../store/types';
-import { 
+import {
+  Tour,
   ToursActionTypes,
   CurrentTourActionTypes,
   ToursDataState,
@@ -8,7 +9,8 @@ import {
   FETCH_TOURS_FAILURE,
   FETCH_CURRENT_TOUR_START,
   FETCH_CURRENT_TOUR_SUCCESS,
-  FETCH_CURRENT_TOUR_FAILURE
+  FETCH_CURRENT_TOUR_FAILURE,
+  CLEAR_CURRENT_TOUR
 } from './types';
 
 export type ToursState = {
@@ -19,7 +21,7 @@ export type ToursState = {
 
 const initialState = {
   data: {
-    tours: [],
+    tours: Array<Tour>(),
     currentTour: null
   },
   isFetching: false,
@@ -67,6 +69,14 @@ export const tourReducer = (
         isFetching: false,
         error: true
        };
+    case CLEAR_CURRENT_TOUR:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          currentTour: null
+        }
+      };
     default:
       return state;
   }

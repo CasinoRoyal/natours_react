@@ -17,7 +17,7 @@ export const useCurrentTourFetch = (id: string): ReducerStateType<CurrentTourDat
   } = useSelector<AppStore, ReducerStateType<CurrentTourDataState>>(getCurrentTourData);
 
   useEffect(() => {
-    dispatch(fetchCurrentTourAsync(id))
+    dispatch(fetchCurrentTourAsync(id));
   }, [dispatch, id]);
 
   return {

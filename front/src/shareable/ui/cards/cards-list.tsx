@@ -4,8 +4,8 @@ import { CardItem, CardItemProps } from './card-item';
 import { useToursFetch } from '../../../tours/hooks/use-tours-fetch';
 
 export const CardsList: FC = (): ReactElement => {
-  const { data, isFetching, error } = useToursFetch();
-  console.log(data, isFetching, error);
+  const { data, error } = useToursFetch();
+  console.log(error);
 
   return (
     <div className="card-container">

@@ -95,7 +95,13 @@ type FetchCurrentTourFailureAction = {
   payload: string; // Must be an ErrorMessageType or ErrorCodeType
 }
 
+export const CLEAR_CURRENT_TOUR = 'CLEAR_CURRENT_TOURE';
+type ClearCurrentTourAction = {
+  type: typeof CLEAR_CURRENT_TOUR;
+}
+
 export type CurrentTourActionTypes = 
   | FetchCurrentTourStartAction
   | FetchCurrentTourSuccessAction
-  | FetchCurrentTourFailureAction;
+  | FetchCurrentTourFailureAction
+  | ClearCurrentTourAction;

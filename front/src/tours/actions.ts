@@ -2,6 +2,7 @@ import { ThunkAction } from 'redux-thunk';
 
 import { api } from '../http/api';
 import { AppStore } from '../store/store';
+//import {} from './selectors.ts'
 import { 
   ToursActionTypes,
   CurrentTourActionTypes,
@@ -11,6 +12,7 @@ import {
   FETCH_CURRENT_TOUR_START,
   FETCH_CURRENT_TOUR_SUCCESS,
   FETCH_CURRENT_TOUR_FAILURE,
+  CLEAR_CURRENT_TOUR,
   Tours,
   CurrentTour
 } from './types';
@@ -43,7 +45,7 @@ type FetchToursResponseType = {
 export function fetchToursAsync(): ThunkAction<void, AppStore, unknown, ToursActionTypes> {
   return async (dispatch) => {
     dispatch(fetchToursStart());
-    
+
     try {
       const options = {
         method: 'GET',
@@ -80,12 +82,18 @@ export function fetchCurrentTourFailure(payload: string): CurrentTourActionTypes
   };
 }
 
+export function clearCurrentTour(): CurrentTourActionTypes {
+  return {
+    type: CLEAR_CURRENT_TOUR
+  };
+}
+
 type FetchCurrentTourResponseType = {
   doc: CurrentTour
 }
 
 export function fetchCurrentTourAsync(id: string): ThunkAction<void, AppStore, unknown, CurrentTourActionTypes> {
-  return async (dispatch, getState) => {
+  return async (dispatch) => {
     dispatch(fetchCurrentTourStart());
     
     try {

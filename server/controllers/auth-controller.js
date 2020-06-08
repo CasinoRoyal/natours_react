@@ -142,19 +142,22 @@ exports.checkAuth = async (req, res, next) => {
     // return next(new AppError( 'Unauthorized', 401));
     return res.status(401).json({ message: 'Unauthorized' });
   }
+  try {
+    const decodeToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
+    const user = await User.findById(decodeToken.id);
 
-  const decodeToken = await promisify(jwt.verify)(req.cookies.jwt, process.env.JWT_SECRET);
-  const user = await User.findById(decodeToken.id);
+    if (!user) {
+      return next(new AppError( 'User not found', 404));
+    }
 
-  if (!user) {
-    return next(new AppError( 'User not found', 404));
+    if (user.isPasswordChanged(decodeToken.iat)) {
+      return next(new AppError('Password was changed', 401));
+    };
+
+    res.status(200).json({ status: 'success', data: { user } });
+  } catch (err) {
+      console.log(err);
   }
-
-  if (user.isPasswordChanged(decodeToken.iat)) {
-    return next(new AppError('Password was changed', 401));
-  };
-
-  res.status(200).json({ status: 'success', data: { user } })
 
 };
 
