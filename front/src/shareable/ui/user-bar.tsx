@@ -7,15 +7,15 @@ export const UserBar: FC = (): ReactElement => {
   const user = useUser();
 
   const renderTemplate = user ? (
-      <>
-        <Link to="/booking" className="nav__el">My bookings</Link>
-        
+      <>        
+        <button className="nav__el nav__el--logout">
+          Logout
+        </button>
+
         <Link to="/profile" className="nav__el">
           <img src={`img/users/${user.photo}`} alt="User" className="nav__user-img" />
           <span>{user.name}</span>
         </Link>
-        <button>Logout</button>
-        <Link to={`/secret`} className="nav__el nav__el--cta">Go secret!</Link>
       </>
     ) : (
       <>
@@ -30,3 +30,6 @@ export const UserBar: FC = (): ReactElement => {
     </nav>
   );
 }
+
+
+// <Link to="/booking" className="nav__el">My bookings</Link>

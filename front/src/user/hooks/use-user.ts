@@ -14,11 +14,9 @@ export const useUser = (): UserData => {
   } = useSelector<AppStore, ReducerStateType<UserData>>(selectUserData);
 
   useEffect(() => {
-    
     if (data) return;
 
     dispatch(checkUserAsync());
-
   }, [dispatch, data]);
 
   return data;
