@@ -1,6 +1,44 @@
- import React, { FC } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent } from 'react';
 
- export const Settings: FC = () => {
+import { useUser } from '../hooks/use-user';
+
+type StateUserType = {
+  name: string;
+  email: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+export const Settings: FC = () => {
+  const initialState = {
+    name: '', 
+    email: '', 
+    currentPassword: '', 
+    newPassword: '', 
+    confirmPassword: ''
+  };
+  const [userData, setUserData] = useState<StateUserType>(initialState);
+  const data = useUser();
+
+  useEffect(() => {
+    if (!data) return;
+
+    setUserData((prevState) => ({
+      ...prevState,
+      ...data
+    }));
+  }, [data]);
+
+  const handlerInput = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target;
+    
+    setUserData((prevState) => ({
+      ...prevState,
+      [name]: value
+    }))
+  }
+
    return (
     <main className="main">
       <div className="user-view">
@@ -9,7 +47,7 @@
         <nav className="user-view__menu">
           <ul className="side-nav">
             <li className="side-nav--active">
-              <a href="">
+              <a href="/nowhere">
                 <svg>
                   <use xlinkHref='img/icons.svg#icon-settings' />
                 </svg>
@@ -17,7 +55,7 @@
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/nowhere">
                 <svg>
                   <use xlinkHref='img/icons.svg#icon-briefcase' />
                 </svg>
@@ -25,7 +63,7 @@
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/nowhere">
                 <svg>
                   <use xlinkHref='img/icons.svg#icon-star' />
                 </svg>
@@ -33,7 +71,7 @@
               </a>
             </li>
             <li>
-              <a href="">
+              <a href="/nowhere">
                 <svg>
                   <use xlinkHref='img/icons.svg#icon-credit-card' />
                 </svg>
@@ -54,8 +92,10 @@
                   type="text" 
                   id="name" 
                   className="form__input" 
-                  value="Jonas Schmedtmann" 
+                  value={userData.name} 
                   required 
+                  onChange={handlerInput}
+                  name='name'
                 />
               </div>
 
@@ -65,13 +105,15 @@
                   type="email" 
                   id="email" 
                   className="form__input" 
-                  value="admin@natours.io" 
+                  value={userData.email} 
                   required 
+                  onChange={handlerInput}
+                  name='email'
                 />
               </div>
 
               <div className="form__group form__photo-upload">
-                <img src="img/user.jpg" alt="User" className="form__user-photo" />
+                <img src={`img/users/${data?.photo}`} alt="User" className="form__user-photo" />
                 <a className="btn-text">Choose new photo</a>
               </div>
 
@@ -96,6 +138,9 @@
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
+                    value={userData.currentPassword}
+                    onChange={handlerInput}
+                    name='currentPassword'
                   />
                 </div>
                 <div className="form__group">
@@ -109,6 +154,9 @@
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
+                    value={userData.newPassword}
+                    onChange={handlerInput}
+                    name='newPassword'
                   />
                 </div>
                 <div className="form__group ma-bt-lg">
@@ -122,6 +170,9 @@
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
+                    value={userData.confirmPassword}
+                    onChange={handlerInput}
+                    name='confirmPassword'
                   />
                 </div>                                 
                 <div className="form__group right">
@@ -136,5 +187,5 @@
         </div>
       </div>
     </main>
-   );
- }
+  );
+}
