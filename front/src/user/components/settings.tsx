@@ -1,6 +1,8 @@
-import React, { FC, useState, useEffect, ChangeEvent } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 import { useUser } from '../hooks/use-user';
+import { User } from '../types';
+import { api } from '../../http/api';
 
 type StateUserType = {
   name: string;
@@ -8,6 +10,11 @@ type StateUserType = {
   currentPassword: string;
   newPassword: string;
   confirmPassword: string;
+}
+
+type ChangesDataType = {
+  name?: string;
+  email?: string;
 }
 
 export const Settings: FC = () => {
@@ -30,6 +37,14 @@ export const Settings: FC = () => {
     }));
   }, [data]);
 
+  const compareData = (keys: Array<keyof ChangesDataType>) => {
+    const results = keys.filter(key => {
+      return userData[key] !==data![key]
+    });
+
+    return results;
+  }
+
   const handlerInput = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     
@@ -39,7 +54,36 @@ export const Settings: FC = () => {
     }))
   }
 
-   return (
+  const handlerUserDataSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    
+    const modifiedKeys = compareData(['name', 'email']);
+    const modifiedData: ChangesDataType = {};
+
+    modifiedKeys.forEach(key => {
+      return modifiedData[key] = userData[key]
+    });
+
+    const options = {
+      method: 'PATCH',
+      endPoint: 'users/change-user-data',
+      data: {...modifiedData}
+    };
+
+    try {
+      const res = await api.request<User>(options);
+      const newData = modifiedKeys.map(key => res[key])
+      
+      setUserData(prevState => ({
+        ...prevState,
+        ...newData
+      }));
+    } catch (err) {
+        console.log(err);
+    }
+  }
+
+  return (
     <main className="main">
       <div className="user-view">
         
@@ -85,7 +129,7 @@ export const Settings: FC = () => {
         <div className="user-view__content">
           <div className="user-view__form-container">
             <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
-            <form className="form form-user-data">
+            <form className="form form-user-data" onSubmit={handlerUserDataSubmit}>
               <div className="form__group">
                 <label htmlFor="name" className="form__label">Name</label>
                 <input 
@@ -118,7 +162,9 @@ export const Settings: FC = () => {
               </div>
 
               <div className="form__group right">
-                <button className="btn btn--small btn--green">Save settings</button>
+                <button type="submit" className="btn btn--small btn--green">
+                  Save settings
+                </button>
               </div>                           
             </form>
 
