@@ -6,7 +6,7 @@ import { useToursFetch } from '../tours/hooks/use-tours-fetch';
 
 
 export const MainPage: FC = (): ReactElement => {
-  const { data, isFetching } = useToursFetch()
+  const { data, isFetching, error } = useToursFetch()
 
   if (isFetching || !data) {
     return <WrappedSpinner />
@@ -14,7 +14,7 @@ export const MainPage: FC = (): ReactElement => {
 
   return (
     <main className="main">
-      <CardsList />
+      <CardsList tours={data} />
     </main>
-  )
+  );
 }

@@ -1,17 +1,15 @@
 import React, { FC, ReactElement } from 'react';
 
 import { CardItem, CardItemProps } from './card-item';
-import { useToursFetch } from '../../../tours/hooks/use-tours-fetch';
+import { Tours } from '../../../tours/types';
 
-export const CardsList: FC = (): ReactElement => {
-  const { data, error } = useToursFetch();
-  console.log(error);
+export const CardsList: FC<{tours: Tours}> = ({ tours }): ReactElement => {
 
   return (
     <div className="card-container">
       {
-        data.map((tour, idx): ReactElement<CardItemProps> => {
-          return <CardItem key={idx} cardData={tour} />
+        tours.map((tour, idx): ReactElement<CardItemProps> => {
+          return <CardItem key={tour.id} cardData={tour} />
         })
       }
     </div>

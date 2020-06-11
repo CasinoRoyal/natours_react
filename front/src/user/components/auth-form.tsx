@@ -1,36 +1,39 @@
 import React, { FC } from 'react';
+import { useForm } from 'react-hook-form';
+import { string, object } from 'yup';
 
-import { 
-  createStateSchema, 
-  createValidateSchema,
-  StateSchemaType,
-  ValidateSchemaType
-} from '../utils/create-schemas';
-import { useForm } from '../../shareable/hooks/useForm';
-import {useAuth} from '../hooks/use-auth';
+import { useFetchSubmit } from '../hooks/use-fecth-submit';
+import { AuthFormData } from '../types';
+import { fetchUserAsync } from '../actions';
+
+const loginSchema = object().shape({
+  email: string().email().required(),
+  password: string().min(8).required()
+});
+
+const signupSchema = object().shape({
+  email: string().email().required(),
+  password: string().min(8).required(),
+  username: string().trim().required(),
+  passwordConfirm: string().min(8).required().test(
+    'matching password', 
+    "Password doesn't match", 
+    function(passwordConfirm) {
+      return passwordConfirm ===this.parent.password
+    })
+});
 
 export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
-  const method = isSignup ? 'signup' : 'login';
-  const {fetch} = useAuth(method)
+  const { register, handleSubmit, errors } = useForm<AuthFormData>({
+    validationSchema: isSignup ? signupSchema : loginSchema
+  });
   
-  const stateSchema = createStateSchema(isSignup);
-  const validateSchema = createValidateSchema(isSignup);
-
-  const formMethods = useForm<StateSchemaType, ValidateSchemaType, typeof fetch>(
-    stateSchema, 
-    validateSchema, 
-    fetch
-  );
-
-  const { 
-    form, 
-    handleChange, 
-    handleSubmit,
-    errorForm
-  } = formMethods;
+  const method = isSignup ? 'signup' : 'login';
+  
+  const { fetch } = useFetchSubmit<AuthFormData>(fetchUserAsync, method);
 
   return (
-    <form className="form form--login" onSubmit={handleSubmit}>
+    <form className="form form--login" onSubmit={handleSubmit(fetch)}>
 
     {isSignup && (
         <div className="form__group">
@@ -45,7 +48,7 @@ export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
             className="form__input"
             placeholder="Username"
             required
-            onChange={handleChange}
+            ref={register}
           />
         </div>
       )}
@@ -62,7 +65,7 @@ export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
           className="form__input"
           placeholder="you@example.com"
           required
-          onChange={handleChange}
+          ref={register}
          />
       </div>
       
@@ -79,7 +82,7 @@ export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
           placeholder="••••••••"
           minLength={8}
           required
-          onChange={handleChange}
+          ref={register}
         />
       </div>
 
@@ -97,13 +100,13 @@ export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
             placeholder="••••••••"
             minLength={8}
             required
-            onChange={handleChange}
+            ref={register}
           />
         </div>
       )}
       
       <div className="form__group">
-        <button className="btn btn--green" disabled={errorForm.error}>
+        <button className="btn btn--green">
           {isSignup ? 'Sign up' : 'Login'}
         </button> 
       </div>

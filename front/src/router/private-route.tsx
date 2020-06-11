@@ -10,9 +10,9 @@ type PrivateRoutePropsType = {
 };
 
 export const PrivateRoute: FC<PrivateRoutePropsType> = (props) => {
-  const user = useUser();
+  const { data } = useUser();
 
-  if (!user) {
+  if (!data) {
     return <Redirect to='/auth/login' />
   }
 

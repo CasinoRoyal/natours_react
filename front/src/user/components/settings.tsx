@@ -1,86 +1,63 @@
-import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { FC, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 
+import { updateUserDataAsync } from '../actions';
 import { useUser } from '../hooks/use-user';
+import { useFetchSubmit } from '../hooks/use-fecth-submit'
 import { User } from '../types';
-import { api } from '../../http/api';
+import { userDataSchema, userChangePasswordSchema } from '../utils/schemas';
 
-type StateUserType = {
+type ChangeDataType = {
   name: string;
   email: string;
-  currentPassword: string;
-  newPassword: string;
-  confirmPassword: string;
 }
 
-type ChangesDataType = {
-  name?: string;
-  email?: string;
+function compare<T> (values: T, comparedValues: T): boolean { 
+  return JSON.stringify(values) !== JSON.stringify(comparedValues); 
 }
 
 export const Settings: FC = () => {
-  const initialState = {
-    name: '', 
-    email: '', 
-    currentPassword: '', 
-    newPassword: '', 
-    confirmPassword: ''
-  };
-  const [userData, setUserData] = useState<StateUserType>(initialState);
-  const data = useUser();
+  const { data } = useUser();
+  const { fetch } = useFetchSubmit<ChangeDataType>(updateUserDataAsync);
+  
+  const { register, handleSubmit, errors, reset } = useForm<ChangeDataType>({
+    defaultValues: {
+      name: '',
+      email: ''
+    },
+    validationSchema: userDataSchema
+  });
+
+  const { 
+      register: passwordRegister, 
+      handleSubmit: passwordSubmit, 
+      errors: passwordErrors 
+  } = useForm({
+    validationSchema: userDataSchema
+  });
 
   useEffect(() => {
     if (!data) return;
 
-    setUserData((prevState) => ({
-      ...prevState,
-      ...data
-    }));
-  }, [data]);
+    reset({name: data.name, email: data.email});
+  }, [reset, data]);
 
-  const compareData = (keys: Array<keyof ChangesDataType>) => {
-    const results = keys.filter(key => {
-      return userData[key] !==data![key]
-    });
+  const handlerUserDataSubmit = (newData: any): void => {
+    if (!data) return;
 
-    return results;
-  }
+    const { name, email } = data;
+    const isChange = compare<ChangeDataType>(newData, {name, email});
 
-  const handlerInput = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    
-    setUserData((prevState) => ({
-      ...prevState,
-      [name]: value
-    }))
-  }
-
-  const handlerUserDataSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    const modifiedKeys = compareData(['name', 'email']);
-    const modifiedData: ChangesDataType = {};
-
-    modifiedKeys.forEach(key => {
-      return modifiedData[key] = userData[key]
-    });
-
-    const options = {
-      method: 'PATCH',
-      endPoint: 'users/change-user-data',
-      data: {...modifiedData}
-    };
-
-    try {
-      const res = await api.request<User>(options);
-      const newData = modifiedKeys.map(key => res[key])
-      
-      setUserData(prevState => ({
-        ...prevState,
-        ...newData
-      }));
-    } catch (err) {
-        console.log(err);
+    if (!isChange) {
+      console.log('data was not changed');
+      return;
     }
+    console.log('hello', data, isChange);
+    fetch(newData);
+  }
+
+  const handlerPasswordSubmit = (data: any) => {
+    console.log(data);
   }
 
   return (
@@ -129,17 +106,20 @@ export const Settings: FC = () => {
         <div className="user-view__content">
           <div className="user-view__form-container">
             <h2 className="heading-secondary ma-bt-md">Your account settings</h2>
-            <form className="form form-user-data" onSubmit={handlerUserDataSubmit}>
+            
+            <form 
+              className="form form-user-data" 
+              onSubmit={handleSubmit(handlerUserDataSubmit)}
+            >
               <div className="form__group">
                 <label htmlFor="name" className="form__label">Name</label>
                 <input 
                   type="text" 
                   id="name" 
                   className="form__input" 
-                  value={userData.name} 
                   required 
-                  onChange={handlerInput}
                   name='name'
+                  ref={register}
                 />
               </div>
 
@@ -149,10 +129,9 @@ export const Settings: FC = () => {
                   type="email" 
                   id="email" 
                   className="form__input" 
-                  value={userData.email} 
                   required 
-                  onChange={handlerInput}
                   name='email'
+                  ref={register}
                 />
               </div>
 
@@ -184,9 +163,8 @@ export const Settings: FC = () => {
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
-                    value={userData.currentPassword}
-                    onChange={handlerInput}
                     name='currentPassword'
+                    ref={passwordRegister}
                   />
                 </div>
                 <div className="form__group">
@@ -200,9 +178,8 @@ export const Settings: FC = () => {
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
-                    value={userData.newPassword}
-                    onChange={handlerInput}
                     name='newPassword'
+                    ref={passwordRegister}
                   />
                 </div>
                 <div className="form__group ma-bt-lg">
@@ -216,9 +193,8 @@ export const Settings: FC = () => {
                     className="form__input" 
                     placeholder="••••••••" 
                     minLength={8}
-                    value={userData.confirmPassword}
-                    onChange={handlerInput}
-                    name='confirmPassword'
+                    name='passwordConfirm'
+                    ref={passwordRegister}
                   />
                 </div>                                 
                 <div className="form__group right">

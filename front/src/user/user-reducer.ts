@@ -6,7 +6,10 @@ import {
   REQUEST_SIGNUP_USER, 
   FETCH_USER_SUCCESS, 
   FETCH_USER_FAILURE,
-  CHECK_USER_FAILURE 
+  CHECK_USER_FAILURE,
+  UPDATE_USER_DATA_START,
+  UPDATE_USER_DATA_SUCCESS,
+  UPDATE_USER_DATA_FAILURE,
 } from './types';
 
 const initialState = {
@@ -25,6 +28,7 @@ export const userReducer = (
   switch (action.type) {
     case REQUEST_SIGNUP_USER:
     case REQUEST_LOGIN_USER:
+    case UPDATE_USER_DATA_START:
       return {
         ...state,
         isFetching: true,
@@ -32,6 +36,7 @@ export const userReducer = (
       }
 
     case FETCH_USER_SUCCESS:
+    case UPDATE_USER_DATA_SUCCESS:
       return {
         ...state,
         isFetching: false,
@@ -42,12 +47,13 @@ export const userReducer = (
       }
 
     case FETCH_USER_FAILURE:
+    case UPDATE_USER_DATA_FAILURE:
       return {
         ...state,
         isFetching: false,
         error: true
       }
-
+      
     case CHECK_USER_FAILURE:
     default:
       return state;

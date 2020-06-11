@@ -10,7 +10,10 @@ import {
   FETCH_USER_FAILURE,
   CHECK_USER_START,
   CHECK_USER_SUCCESS,
-  CHECK_USER_FAILURE
+  CHECK_USER_FAILURE,
+  UPDATE_USER_DATA_START,
+  UPDATE_USER_DATA_SUCCESS,
+  UPDATE_USER_DATA_FAILURE
 } from './types';
 import { AppStore } from '../store/store';
 import { api } from '../http/api';
@@ -62,7 +65,27 @@ function checkUserFailure(): UserActionsType {
   }
 };
 
-export function fetchUserAsync(methodAuth:string, data:AuthFormData): ThunkAction<void, AppStore, unknown, UserActionsType> {
+function updateUserDataStart(): UserActionsType {
+  return {
+    type: UPDATE_USER_DATA_START
+  }
+};
+
+function updateUserDataSuccess(payload: User): UserActionsType {
+  return {
+    type: UPDATE_USER_DATA_SUCCESS,
+    payload
+  }
+};
+
+function updateUserDataFailure(payload: string): UserActionsType {
+  return {
+    type: UPDATE_USER_DATA_FAILURE,
+    payload
+  }
+};
+
+export function fetchUserAsync(data:AuthFormData, methodAuth:string): ThunkAction<void, AppStore, unknown, UserActionsType> {
   return async (dispatch) => {
     const requestOptions: RequestOptionsType = {
       method: 'POST',
@@ -111,3 +134,26 @@ export function checkUserAsync(): ThunkAction<void, AppStore, unknown, UserActio
 
   }
 }
+
+export function updateUserDataAsync<T extends object>(data: T): ThunkAction<void, AppStore, unknown, UserActionsType> {
+  return async (dispatch) => {
+    dispatch(updateUserDataStart());
+
+    const options = {
+      method: 'PATCH',
+      endPoint: 'users/change-user-data',
+      data
+    }
+
+    try {
+      
+      const res: { user: User } = await api.request(options);
+      dispatch(updateUserDataSuccess(res.user));
+      
+    } catch (err) {
+        console.log(err);
+        const errMsg = err.response?.data?.message;
+        dispatch(updateUserDataFailure(errMsg));
+    }
+  }
+};

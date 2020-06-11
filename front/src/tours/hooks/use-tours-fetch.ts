@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { Tours } from '../types';
 import { getAllToursData } from '../selectors';
-import { fetchToursAsync, fetchToursSuccess, fetchToursStart } from '../actions';
+import { fetchToursAsync } from '../actions';
 import { AppStore } from '../../store/store';
 import { ReducerStateType } from '../../store/types';
 
@@ -18,8 +18,6 @@ export const useToursFetch = (): ReducerStateType<Tours> => {
   useEffect(() => {
 
     if (data.length !==0) {
-      dispatch(fetchToursStart());
-      dispatch(fetchToursSuccess(data));
       return;
     };
 

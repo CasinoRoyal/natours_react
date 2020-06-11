@@ -7,10 +7,12 @@ import { checkUserAsync } from '../actions';
 import { ReducerStateType } from '../../store/types';
 import { AppStore } from '../../store/store';
 
-export const useUser = (): UserData => {
+export const useUser = (): ReducerStateType<UserData> => {
   const dispatch = useDispatch();
   const {
-    data
+    data,
+    isFetching,
+    error
   } = useSelector<AppStore, ReducerStateType<UserData>>(selectUserData);
 
   useEffect(() => {
@@ -19,5 +21,5 @@ export const useUser = (): UserData => {
     dispatch(checkUserAsync());
   }, [dispatch, data]);
 
-  return data;
+  return { data, isFetching, error };
 }

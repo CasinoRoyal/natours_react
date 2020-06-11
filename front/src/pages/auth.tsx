@@ -1,26 +1,21 @@
 import React, { FC, ReactElement } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 
-import { useAuth } from '../user/hooks/use-auth';
 import { useUser } from '../user/hooks/use-user';
 import { Spinner } from '../shareable/ui/spinner';
 import { AuthForm } from '../user/components/auth-form';
 
 export const AuthPage: FC = (): ReactElement => {
-  const user = useUser();
+  const { data, isFetching, error } = useUser();
   const { methodAuth } = useParams<{methodAuth: string}>();
-  const { error, isFetching } = useAuth(methodAuth);
-  console.log(user, error);
 
-  if (user) {
+  if (data) {
     return <Redirect to='/' />
   }
   
   const isSignup = methodAuth ==='signup' ? true : false;
 
   if (isFetching) return <Spinner />
-
-  if (error) return <div>Error!!!!</div>
 
   return (
     <main className="main">

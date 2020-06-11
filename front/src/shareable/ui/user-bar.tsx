@@ -4,17 +4,17 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../../user/hooks/use-user';
 
 export const UserBar: FC = (): ReactElement => {
-  const user = useUser();
+  const { data } = useUser();
 
-  const renderTemplate = user ? (
+  const renderTemplate = data ? (
       <>        
         <button className="nav__el nav__el--logout">
           Logout
         </button>
 
         <Link to="/profile" className="nav__el">
-          <img src={`img/users/${user.photo}`} alt="User" className="nav__user-img" />
-          <span>{user.name}</span>
+          <img src={`img/users/${data.photo}`} alt="User" className="nav__user-img" />
+          <span>{data.name}</span>
         </Link>
       </>
     ) : (

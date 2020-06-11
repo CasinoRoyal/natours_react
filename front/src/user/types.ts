@@ -16,9 +16,9 @@ export type UserDataState = {
 
 export type AuthFormData = {
   email: string;
-  password: number;
+  password: string;
   username?: string;
-  passwordConfirm?: number;
+  passwordConfirm?: string;
 };
 
 // redux types
@@ -60,6 +60,23 @@ type checkUserFailureAction = {
   type: typeof CHECK_USER_FAILURE
 }
 
+export const UPDATE_USER_DATA_START = 'UPDATE_USER_DATA_START';
+type updateUserDataStartAction = {
+  type: typeof UPDATE_USER_DATA_START
+}
+
+export const UPDATE_USER_DATA_SUCCESS = 'UPDATE_USER_DATA_SUCCESS';
+type updateUserDataSuccessAction = {
+  type: typeof UPDATE_USER_DATA_SUCCESS,
+  payload: User
+}
+
+export const UPDATE_USER_DATA_FAILURE = 'UPDATE_USER_DATA_FAILURE';
+type updateUserDataFailureAction = {
+  type: typeof UPDATE_USER_DATA_FAILURE,
+  payload: string
+}
+
 export type UserActionsType = 
   | requestLoginUserAction
   | requestSignupUserAction
@@ -67,4 +84,7 @@ export type UserActionsType =
   | fetchUserFailureAction
   | checkUserStartAction
   | checkUserSuccessAction
-  | checkUserFailureAction;
+  | checkUserFailureAction
+  | updateUserDataStartAction
+  | updateUserDataFailureAction
+  | updateUserDataSuccessAction;
