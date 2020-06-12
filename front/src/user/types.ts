@@ -21,6 +21,17 @@ export type AuthFormData = {
   passwordConfirm?: string;
 };
 
+export type ChangeDataType = {
+  name: string;
+  email: string;
+};
+
+export type ChangePasswordType = {
+  currentPassword: string;
+  password: string;
+  passwordConfirm: string;
+};
+
 // redux types
 export const REQUEST_LOGIN_USER = 'REQUEST_LOGIN_USER';
 type requestLoginUserAction = {

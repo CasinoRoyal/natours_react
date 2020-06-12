@@ -7,7 +7,7 @@ export const userDataSchema = object().shape({
 
 export const userChangePasswordSchema = object().shape({
   currentPassword: string().min(8).required(),
-  newPassword: string().min(8).required(),
+  password: string().min(8).required(),
   passwordConfirm: string().min(8).required().test(
     'matching password', 
     "Password doesn't match",
