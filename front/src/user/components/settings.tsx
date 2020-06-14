@@ -1,10 +1,8 @@
-import React, { FC, useEffect } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
+import React, { FC } from 'react';
 
 import { ChangeUserData } from './change-user-data';
 import { ChangePassword } from './change-password';
 import { User } from '../types';
-import { getNotify, Notify } from '../../shareable/ui/notify';
 
 export const Settings: FC<{user: User}> = ({ user }) => {
   return (

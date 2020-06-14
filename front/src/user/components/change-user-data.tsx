@@ -1,17 +1,19 @@
 import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 
 import { ChangeDataType } from '../types';
 import { updateUserDataAsync } from '../actions';
 import { useFetchSubmit } from '../hooks/use-fecth-submit';
 import { userDataSchema } from '../utils/schemas';
 import { compare } from '../utils/compare';
+import { useNotify } from '../../shareable/hooks/use-notify';
 
 type ChangeUserPropsType = ChangeDataType & {photo: string};
 
 export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) => {
   const { fetch } = useFetchSubmit<ChangeDataType>(updateUserDataAsync);
-  
+  const { getErrorNotify } = useNotify();
   const { register, handleSubmit, errors, reset } = useForm<ChangeDataType>({
     defaultValues: {
       name: '',
@@ -22,8 +24,14 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
 
   useEffect(() => {
     reset({name: name, email: email});
-  }, [reset, name, email]);
+  }, [reset, name, email])
 
+
+  useEffect(() => {
+    if (errors.name || errors.email) {
+      getErrorNotify(errors)
+    }
+  }, [errors, getErrorNotify]);
 
   const handlerUserDataSubmit = (newData: ChangeDataType): void => {
 
@@ -35,9 +43,10 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
     const isChange = compare<ChangeDataType>(newData, comparedValues);
 
     if (!isChange) {
-      console.log('data was not changed');
+      toast.error('data was not change');
       return;
     }
+
     fetch(newData);
   }
 
@@ -86,6 +95,3 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
     </div>
   );
 }
-
-
-

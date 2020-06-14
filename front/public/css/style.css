@@ -102,6 +102,7 @@ body {
   padding: 1.6rem 15rem;
   -webkit-box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
   box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.25);
+  background-color: #8EC6E7FF;
 }
 .alert--success {
   background-color: #20bf6b;

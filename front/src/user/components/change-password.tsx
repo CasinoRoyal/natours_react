@@ -5,13 +5,22 @@ import { ChangePasswordType } from '../types';
 import { updateUserDataAsync } from '../actions';
 import { useFetchSubmit } from '../hooks/use-fecth-submit';
 import { userChangePasswordSchema } from '../utils/schemas';
+import { useNotify } from '../../shareable/hooks/use-notify';
 
 export const ChangePassword: FC = () => {
   const { fetch } = useFetchSubmit<ChangePasswordType>(updateUserDataAsync);
+  const { getErrorNotify } = useNotify();
   
   const { register, handleSubmit, errors } = useForm<ChangePasswordType>({
     validationSchema: userChangePasswordSchema
   });
+
+  useEffect(() => {
+    if (errors.passwordConfirm) {
+      getErrorNotify(errors);
+    }
+  }, [errors, getErrorNotify])
+
 
   const handlerPasswordSubmit = (newData: ChangePasswordType) => {
     fetch(newData);

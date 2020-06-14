@@ -21,7 +21,6 @@ export const useFetchSubmit = <D>(
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('render');
     if (doFetch.fetching && doFetch.data !==null) {
       const actionsArguments: any[] = [doFetch.data];
       

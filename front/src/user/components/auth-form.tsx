@@ -1,36 +1,27 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { string, object } from 'yup';
 
 import { useFetchSubmit } from '../hooks/use-fecth-submit';
 import { AuthFormData } from '../types';
 import { fetchUserAsync } from '../actions';
-
-const loginSchema = object().shape({
-  email: string().email().required(),
-  password: string().min(8).required()
-});
-
-const signupSchema = object().shape({
-  email: string().email().required(),
-  password: string().min(8).required(),
-  username: string().trim().required(),
-  passwordConfirm: string().min(8).required().test(
-    'matching password', 
-    "Password doesn't match", 
-    function(passwordConfirm) {
-      return passwordConfirm ===this.parent.password
-    })
-});
+import { loginSchema, signupSchema } from '../utils/schemas';
+import { useNotify } from '../../shareable/hooks/use-notify';
 
 export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
   const { register, handleSubmit, errors } = useForm<AuthFormData>({
     validationSchema: isSignup ? signupSchema : loginSchema
   });
-  
+  const { getErrorNotify } = useNotify();
+
   const method = isSignup ? 'signup' : 'login';
   
   const { fetch } = useFetchSubmit<AuthFormData>(fetchUserAsync, method);
+    
+  useEffect(() => {
+    if (Object.keys(errors).length !==0) {
+      getErrorNotify(errors);
+    }
+  }, [errors, getErrorNotify]);
 
   return (
     <form className="form form--login" onSubmit={handleSubmit(fetch)}>
