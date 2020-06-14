@@ -2,7 +2,7 @@ import React, { FC, ReactElement } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 
 import { useUser } from '../user/hooks/use-user';
-import { Spinner } from '../shareable/ui/spinner';
+import { WrappedSpinner } from '../shareable/ui/wrapper';
 import { AuthForm } from '../user/components/auth-form';
 
 export const AuthPage: FC = (): ReactElement => {
@@ -15,7 +15,7 @@ export const AuthPage: FC = (): ReactElement => {
   
   const isSignup = methodAuth ==='signup' ? true : false;
 
-  if (isFetching) return <Spinner />
+  if (isFetching) return <WrappedSpinner />
 
   return (
     <main className="main">

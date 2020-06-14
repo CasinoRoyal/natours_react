@@ -8,7 +8,7 @@ import { useToursFetch } from '../tours/hooks/use-tours-fetch';
 export const MainPage: FC = (): ReactElement => {
   const { data, isFetching, error } = useToursFetch()
 
-  if (isFetching || !data) {
+  if (isFetching || data.length ===0) {
     return <WrappedSpinner />
   }
 

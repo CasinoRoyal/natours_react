@@ -1,20 +1,22 @@
 import React, { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useUser } from '../../user/hooks/use-user';
+import { UserData } from '../../user/types';
 
-export const UserBar: FC = (): ReactElement => {
-  const { data } = useUser();
+// import { useUser } from '../../user/hooks/use-user';
 
-  const renderTemplate = data ? (
+export const UserBar: FC<{ user: UserData }> = ({ user }): ReactElement => {
+  // const { data } = useUser();
+
+  const renderTemplate = user ? (
       <>        
         <button className="nav__el nav__el--logout">
           Logout
         </button>
 
         <Link to="/profile" className="nav__el">
-          <img src={`img/users/${data.photo}`} alt="User" className="nav__user-img" />
-          <span>{data.name}</span>
+          <img src={`img/users/${user.photo}`} alt="User" className="nav__user-img" />
+          <span>{user.name}</span>
         </Link>
       </>
     ) : (
