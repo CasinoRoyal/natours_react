@@ -14,7 +14,7 @@ export const useToursFetch = (): ReducerStateType<Tours> => {
     isFetching, 
     error
   } = useSelector<AppStore, ReducerStateType<Tours>>(getAllToursData);
-  console.log('render use TOURS');
+
   useEffect(() => {
 
     if (data.length !==0) {

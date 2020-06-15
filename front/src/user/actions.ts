@@ -13,7 +13,10 @@ import {
   CHECK_USER_FAILURE,
   UPDATE_USER_DATA_START,
   UPDATE_USER_DATA_SUCCESS,
-  UPDATE_USER_DATA_FAILURE
+  UPDATE_USER_DATA_FAILURE,
+  REQUEST_LOGOUT_USER,
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_FAILURE
 } from './types';
 import { AppStore } from '../store/store';
 import { api } from '../http/api';
@@ -85,6 +88,25 @@ function updateUserDataFailure(payload: string): UserActionsType {
   }
 };
 
+function requestLogoutUser(): UserActionsType {
+  return {
+    type: REQUEST_LOGOUT_USER
+  }
+}
+
+function logoutUserSuccess(): UserActionsType {
+  return {
+    type: LOGOUT_USER_SUCCESS
+  }
+}
+
+function logoutUserFailure(payload: string): UserActionsType {
+  return {
+    type: LOGOUT_USER_FAILURE,
+    payload
+  }
+}
+
 export function fetchUserAsync(data:AuthFormData, methodAuth:string): ThunkAction<void, AppStore, unknown, UserActionsType> {
   return async (dispatch) => {
     const requestOptions: RequestOptionsType = {
@@ -114,7 +136,11 @@ export function fetchUserAsync(data:AuthFormData, methodAuth:string): ThunkActio
 };
 
 export function checkUserAsync(): ThunkAction<void, AppStore, unknown, UserActionsType> {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const state = getState();
+
+    if (state.user.isFetching) return;
+
     dispatch(checkUserStart());
 
     const options = {
@@ -157,3 +183,23 @@ export function updateUserDataAsync<T extends object>(data: T): ThunkAction<void
     }
   }
 };
+
+export function logoutUserAsync(): ThunkAction<void, AppStore, unknown, UserActionsType> {
+  return async(dispatch) => {
+    dispatch(requestLogoutUser());
+
+    try {
+      const options = {
+        method: 'GET',
+        endPoint: 'users/logout',
+      }
+
+      await api.request(options);
+      dispatch(logoutUserSuccess());
+    } catch (err) {
+        console.log(err);
+        const errMsg = err.response?.data?.message;
+        dispatch(logoutUserFailure(errMsg));
+    }
+  }
+}

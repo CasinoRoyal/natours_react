@@ -8,9 +8,8 @@ import { Description } from '../tours/components/description';
 import { Images } from '../tours/components/images';
 import { Reviews } from '../tours/components/reviews';
 import { CTA } from '../tours/components/cta';
-
 import { WrappedSpinner } from '../shareable/ui/wrapper';
-import {clearCurrentTour} from '../tours/actions';
+import { clearCurrentTour } from '../tours/actions';
 
 type ParamsType = {
   tourId: string;
@@ -19,12 +18,11 @@ type ParamsType = {
 export const TourPage: FC = (): ReactElement => {
   const dispatch = useDispatch();
   const { tourId } = useParams<ParamsType>();
-  const { data, isFetching, error } = useCurrentTourFetch(tourId);
-  console.log(error);
+  const { data, isFetching } = useCurrentTourFetch(tourId);
 
-  useEffect((): any => {
+  useEffect(():()=>void => {
 
-    return () => dispatch(clearCurrentTour())
+    return function() { dispatch(clearCurrentTour()); return;}
   }, [dispatch]);
 
   if (isFetching || !data) {

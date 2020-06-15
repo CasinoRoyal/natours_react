@@ -2,15 +2,15 @@ import React, { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 import { UserData } from '../../user/types';
-
-// import { useUser } from '../../user/hooks/use-user';
+import { logoutUserAsync } from '../../user/actions';
+import { useFetchSubmit } from '../../user/hooks/use-fecth-submit';
 
 export const UserBar: FC<{ user: UserData }> = ({ user }): ReactElement => {
-  // const { data } = useUser();
+  const { fetch } = useFetchSubmit(logoutUserAsync);
 
   const renderTemplate = user ? (
       <>        
-        <button className="nav__el nav__el--logout">
+        <button onClick={fetch} className="nav__el nav__el--logout">
           Logout
         </button>
 
@@ -32,6 +32,3 @@ export const UserBar: FC<{ user: UserData }> = ({ user }): ReactElement => {
     </nav>
   );
 }
-
-
-// <Link to="/booking" className="nav__el">My bookings</Link>

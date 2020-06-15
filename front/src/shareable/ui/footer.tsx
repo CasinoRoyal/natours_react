@@ -4,7 +4,7 @@ export const Footer: FC = (): ReactElement => {
   return (
     <div className="footer">
       <div className="footer__logo">
-        <img src="img/logo-green.png" alt="Natours logo" />
+        <img src={`${process.env.PUBLIC_URL}/img/logo-green.png`} alt="Natours logo" />
       </div>
       <ul className="footer__nav">
         <li><a href="/">About us</a></li>

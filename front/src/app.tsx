@@ -10,7 +10,6 @@ import { Footer } from './shareable/ui/footer';
 
 export const App: FC = (): ReactElement => {
   const { data, error } = useUser();
-  console.log('render APP');
   
   if (error) {
     toast.error(error);

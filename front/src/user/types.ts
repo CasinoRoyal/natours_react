@@ -32,7 +32,7 @@ export type ChangePasswordType = {
   passwordConfirm: string;
 };
 
-// redux types
+// REDUX action types
 export const REQUEST_LOGIN_USER = 'REQUEST_LOGIN_USER';
 type requestLoginUserAction = {
   type: typeof REQUEST_LOGIN_USER
@@ -88,6 +88,22 @@ type updateUserDataFailureAction = {
   payload: string
 }
 
+export const REQUEST_LOGOUT_USER = 'REQUEST_LOGOUT_USER';
+type requestLogoutUserAction = {
+  type: typeof REQUEST_LOGOUT_USER
+}
+
+export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
+type logoutUserSuccessAction = {
+  type: typeof LOGOUT_USER_SUCCESS
+}
+
+export const LOGOUT_USER_FAILURE = 'LOGOUT_USER_FAILURE';
+type logoutUserFailureAction = {
+  type: typeof LOGOUT_USER_FAILURE,
+  payload: string
+}
+
 export type UserActionsType = 
   | requestLoginUserAction
   | requestSignupUserAction
@@ -98,4 +114,7 @@ export type UserActionsType =
   | checkUserFailureAction
   | updateUserDataStartAction
   | updateUserDataFailureAction
-  | updateUserDataSuccessAction;
+  | updateUserDataSuccessAction
+  | requestLogoutUserAction
+  | logoutUserFailureAction
+  | logoutUserSuccessAction;

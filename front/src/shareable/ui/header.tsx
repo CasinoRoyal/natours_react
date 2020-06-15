@@ -11,7 +11,7 @@ export const Header: FC<{ data: UserData }> = ({ data }): ReactElement => {
       <NavTours />
 
       <div className="header__logo">
-        <img src="img/logo-white.png" alt="Natours logo" />
+        <img src={`${process.env.PUBLIC_URL}/img/logo-white.png`} alt="Natours logo" />
       </div>
       
       <UserBar user={data} />
@@ -19,3 +19,4 @@ export const Header: FC<{ data: UserData }> = ({ data }): ReactElement => {
     </header>
   )
 }
+

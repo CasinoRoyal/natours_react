@@ -9,7 +9,7 @@ type StateFetchDataType<D> = {
 type ReturnFetchSubmitType = { fetch: (data: any) => void };
 
 export const useFetchSubmit = <D>(
-  asyncAction: any,
+  action: any,
   methodAuth?:string
 ): ReturnFetchSubmitType  => {
 
@@ -21,24 +21,28 @@ export const useFetchSubmit = <D>(
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (doFetch.fetching && doFetch.data !==null) {
-      const actionsArguments: any[] = [doFetch.data];
-      
-      if (methodAuth) actionsArguments.push(methodAuth);
+    if (doFetch.fetching) {
+      if (doFetch.data !==null) {
+        const actionsArguments: any[] = [doFetch.data];
+        
+        if (methodAuth) actionsArguments.push(methodAuth);
 
-      dispatch(asyncAction(...actionsArguments));
+        dispatch(action(...actionsArguments));
+      } else {
+        dispatch(action());
+      }
       
       setDoFetch((prevState) => ({
         ...prevState,
         fetching: false
       }));
     }
-  }, [doFetch, dispatch, methodAuth, asyncAction]);
+  }, [doFetch, dispatch, methodAuth, action]);
 
-  function fetch(data: D): void {
+  function fetch(data?: D): void {
     setDoFetch((prevState) => ({
       ...prevState,
-      data,
+      data: data ? data : null,
       fetching: true
     }));
   }
