@@ -3,22 +3,24 @@ import { useForm } from 'react-hook-form';
 
 import { useFetchSubmit } from '../hooks/use-fecth-submit';
 import { AuthFormData } from '../types';
-import { fetchUserAsync } from '../actions';
-import { loginSchema, signupSchema } from '../utils/schemas';
+import { fetchAuthAsync } from '../actions';
+import { loginSchema, signupSchema } from '../../user/utils/schemas';
 import { useNotify } from '../../shareable/hooks/use-notify';
 
 export const AuthForm:FC<{isSignup: boolean}> = ({ isSignup }) => {
   const { register, handleSubmit, errors } = useForm<AuthFormData>({
     validationSchema: isSignup ? signupSchema : loginSchema
   });
+  console.log(errors);
   const { getErrorNotify } = useNotify();
 
   const method = isSignup ? 'signup' : 'login';
   
-  const { fetch } = useFetchSubmit<AuthFormData>(fetchUserAsync, method);
+  const { fetch } = useFetchSubmit<AuthFormData>(fetchAuthAsync, method);
     
   useEffect(() => {
     if (Object.keys(errors).length !==0) {
+      console.log('render client errors');
       getErrorNotify(errors);
     }
   }, [errors, getErrorNotify]);

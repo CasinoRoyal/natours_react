@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 
 import { ChangePasswordType } from '../types';
 import { updateUserDataAsync } from '../actions';
-import { useFetchSubmit } from '../hooks/use-fecth-submit';
+import { useFetchSubmit } from '../../auth/hooks/use-fecth-submit';
 import { userChangePasswordSchema } from '../utils/schemas';
 import { useNotify } from '../../shareable/hooks/use-notify';
 

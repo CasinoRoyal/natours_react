@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { ChangeDataType } from '../types';
 import { updateUserDataAsync } from '../actions';
-import { useFetchSubmit } from '../hooks/use-fecth-submit';
+import { useFetchSubmit } from '../../auth/hooks/use-fecth-submit';
 import { userDataSchema } from '../utils/schemas';
 import { compare } from '../utils/compare';
 import { useNotify } from '../../shareable/hooks/use-notify';

@@ -2,11 +2,11 @@ import React, { FC, ReactElement } from 'react';
 import { Link } from 'react-router-dom';
 
 import { UserData } from '../../user/types';
-import { logoutUserAsync } from '../../user/actions';
-import { useFetchSubmit } from '../../user/hooks/use-fecth-submit';
+import { fetchLogoutAsync } from '../../auth/actions';
+import { useFetchSubmit } from '../../auth/hooks/use-fecth-submit';
 
 export const UserBar: FC<{ user: UserData }> = ({ user }): ReactElement => {
-  const { fetch } = useFetchSubmit(logoutUserAsync);
+  const { fetch } = useFetchSubmit(fetchLogoutAsync);
 
   const renderTemplate = user ? (
       <>        

@@ -6,7 +6,7 @@ import { useUser } from '../user/hooks/use-user';
 
 export const ProfilePage = () => {
   const { data } = useUser(); 
-  if (data == null) return <Redirect to='/' />;
+  if (data == null) { console.log('redirect profile'); return <Redirect to='/' />;}
   
   return (
     <Settings user={data} />

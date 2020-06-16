@@ -14,13 +14,6 @@ export type UserDataState = {
   user: UserData
 };
 
-export type AuthFormData = {
-  email: string;
-  password: string;
-  username?: string;
-  passwordConfirm?: string;
-};
-
 export type ChangeDataType = {
   name: string;
   email: string;
@@ -33,42 +26,22 @@ export type ChangePasswordType = {
 };
 
 // REDUX action types
-export const REQUEST_LOGIN_USER = 'REQUEST_LOGIN_USER';
-type requestLoginUserAction = {
-  type: typeof REQUEST_LOGIN_USER
-}
 
-export const REQUEST_SIGNUP_USER = 'REQUEST_SIGNUP_USER';
-type requestSignupUserAction = {
-  type: typeof REQUEST_SIGNUP_USER
-}
-
-
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
-type fetchUserSuccessAction = {
-  type: typeof FETCH_USER_SUCCESS,
+export const FILL_USER = 'FILL_USER';
+type fillUserAction = {
+  type: typeof FILL_USER,
   payload: User
+}
+
+export const CLEAR_USER = 'CLEAR_USER';
+type clearUserAction = {
+  type: typeof CLEAR_USER,
 }
 
 export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
 type fetchUserFailureAction = {
   type: typeof FETCH_USER_FAILURE,
   payload: string
-}
-
-export const CHECK_USER_START = 'CHECK_USER_START';
-type checkUserStartAction = {
-  type: typeof CHECK_USER_START
-}
-
-export const CHECK_USER_SUCCESS = 'CHECK_USER_SUCCESS';
-type checkUserSuccessAction = {
-  type: typeof CHECK_USER_SUCCESS
-}
-
-export const CHECK_USER_FAILURE = 'CHECK_USER_FAILURE';
-type checkUserFailureAction = {
-  type: typeof CHECK_USER_FAILURE
 }
 
 export const UPDATE_USER_DATA_START = 'UPDATE_USER_DATA_START';
@@ -88,33 +61,12 @@ type updateUserDataFailureAction = {
   payload: string
 }
 
-export const REQUEST_LOGOUT_USER = 'REQUEST_LOGOUT_USER';
-type requestLogoutUserAction = {
-  type: typeof REQUEST_LOGOUT_USER
-}
 
-export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
-type logoutUserSuccessAction = {
-  type: typeof LOGOUT_USER_SUCCESS
-}
-
-export const LOGOUT_USER_FAILURE = 'LOGOUT_USER_FAILURE';
-type logoutUserFailureAction = {
-  type: typeof LOGOUT_USER_FAILURE,
-  payload: string
-}
 
 export type UserActionsType = 
-  | requestLoginUserAction
-  | requestSignupUserAction
-  | fetchUserSuccessAction
+  | fillUserAction
+  | clearUserAction
   | fetchUserFailureAction
-  | checkUserStartAction
-  | checkUserSuccessAction
-  | checkUserFailureAction
   | updateUserDataStartAction
   | updateUserDataFailureAction
-  | updateUserDataSuccessAction
-  | requestLogoutUserAction
-  | logoutUserFailureAction
-  | logoutUserSuccessAction;
+  | updateUserDataSuccessAction;
