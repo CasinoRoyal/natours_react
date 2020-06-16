@@ -59,11 +59,11 @@ exports.changeUserData = catchAsyncError(async (req, res, next) => {
     return next(new AppError('Only non-secure data can change in this route', 400));
   };
 
-  const filteredUserRequest = filteringAllowsFields(req.body, 'name', 'email');
-
-  if (req.file) {
-    filteredUserRequest.photo = req.file.filename;
-  };
+  const filteredUserRequest = filteringAllowsFields(req.body, 'name', 'email', 'photo');
+  // console.log(req)
+  // if (req.file) {
+  //   filteredUserRequest.photo = req.file.filename;
+  // };
 
   const updateUser = await User.findByIdAndUpdate(
     req.user.id,

@@ -32,7 +32,7 @@ export const Reviews: FC<ReviewsPropsType> = ({ reviews }): ReactElement => {
                 <div key={idx} className="reviews__card">
                   <div className="reviews__avatar">
                     <img
-                      src={`img/users/${review.user.photo}`}
+                      src={`${process.env.PUBLIC_URL}/img/users/${review.user.photo}`}
                       alt={`${review.user.name}`}
                       className="reviews__avatar-img"
                     />

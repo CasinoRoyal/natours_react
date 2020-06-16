@@ -17,6 +17,7 @@ export type UserDataState = {
 export type ChangeDataType = {
   name: string;
   email: string;
+  photo: string;
 };
 
 export type ChangePasswordType = {

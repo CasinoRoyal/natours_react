@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState, ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
@@ -12,19 +12,24 @@ import { useNotify } from '../../shareable/hooks/use-notify';
 type ChangeUserPropsType = ChangeDataType & {photo: string};
 
 export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) => {
+  const [file, setFile] = useState<any>(photo);
+  const [tempUrl, setTempUrl] = useState<any>('');
   const { fetch } = useFetchSubmit<ChangeDataType>(updateUserDataAsync);
   const { getErrorNotify } = useNotify();
   const { register, handleSubmit, errors, reset } = useForm<ChangeDataType>({
     defaultValues: {
       name: '',
-      email: ''
+      email: '',
+      photo: ''
     },
     validationSchema: userDataSchema
   });
+  
+  const imgUrl = tempUrl ? tempUrl : `img/users/${file}`
 
   useEffect(() => {
-    reset({name: name, email: email});
-  }, [reset, name, email])
+    reset({name: name, email: email, photo: photo});
+  }, [reset, name, email, photo])
 
 
   useEffect(() => {
@@ -33,11 +38,31 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
     }
   }, [errors, getErrorNotify]);
 
-  const handlerUserDataSubmit = (newData: ChangeDataType): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    const files = e.target.files;
 
+    if (files) {
+      reader.readAsDataURL(files[0]); 
+
+      reader.onloadend = () => {
+        if (typeof reader.result ==='string') {
+          setTempUrl(reader.result);
+        }
+      }
+      
+      setFile(files[0]);
+    }
+  }
+
+  const handlerUserDataSubmit = (newData: ChangeDataType): void => {
+    const formData = new FormData();
+    newData.photo = file;
+    
     const comparedValues = { 
       name: name, 
-      email: email 
+      email: email,
+      photo: photo
     };
 
     const isChange = compare<ChangeDataType>(newData, comparedValues);
@@ -47,7 +72,11 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
       return;
     }
 
-    fetch(newData);
+    formData.append('name', newData.name);
+    formData.append('email', newData.email);
+    formData.append('photo', newData.photo);
+    console.log(formData.values());
+    fetch(formData);
   }
 
   return (
@@ -82,8 +111,16 @@ export const ChangeUserData: FC<ChangeUserPropsType> = ({name, email, photo}) =>
         </div>
 
         <div className="form__group form__photo-upload">
-          <img src={`img/users/${photo}`} alt="User" className="form__user-photo" />
-          <button className="btn-text">Choose new photo</button>
+          <img src={imgUrl} alt="User" className="form__user-photo" />
+          <input 
+            className="form__upload" 
+            type="file" 
+            accept="image/*" 
+            id="photo" 
+            name="photo"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="photo">Choose new photo</label>
         </div>
 
         <div className="form__group right">
